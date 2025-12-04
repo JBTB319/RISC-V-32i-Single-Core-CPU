@@ -1,6 +1,6 @@
 module control_unit (
    input logic [6:0] op,
-   input logic [3:0] fun3,
+   input logic [2:0] fun3,
    input logic [6:0] fun7,
    input logic zero,
    output logic PCSrc,
