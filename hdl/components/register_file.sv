@@ -8,7 +8,7 @@ module register_file (
    input logic [4:0] A3,
    output logic [31:0] RD1,
    output logic [31:0] RD2
-)
+);
    logic [31:0] registers [32:0];
 
    always_ff @(posedge clock) begin 

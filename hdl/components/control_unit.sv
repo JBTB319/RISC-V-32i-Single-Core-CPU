@@ -9,6 +9,6 @@ module control_unit (
    output logic RegWrite,
    output logic [3:0] ImmSel,
    output logic ALUSrc
-)
+);
 
 endmodule

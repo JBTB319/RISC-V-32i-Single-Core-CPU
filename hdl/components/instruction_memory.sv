@@ -3,7 +3,7 @@ module instruction_memory (
    input logic rst,
    input logic [31:0] address,
    output logic [31:0] instruction
-)
+);
    logic [31:0] memory [65535:0];
 
    always_ff @(posedge clk) begin

@@ -5,7 +5,7 @@ module data_memory (
    input logic rst,
    input logic [31:0] WD,
    output logic [31:0] RD
-)
+);
    logic [31:0] data [65535:0]
    always_ff @(posedge clk) begin
       if (rst)
