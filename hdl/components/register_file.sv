@@ -1,8 +1,8 @@
 module register_file (
-   input logic WE3,
+   input logic WriteEnable,
    input logic rst,
    input clk,
-   input logic [31:0] WD3,
+   input logic [31:0] WriteData,
    input logic [4:0] A1,
    input logic [4:0] A2,
    input logic [4:0] A3,
@@ -17,8 +17,8 @@ module register_file (
          RD1 <= 32'b0;
          RD2 <= 32'b0;
       end else begin
-         if(WE3) begin
-            registers[A3] = WD3;
+         if(WriteEnable) begin
+            registers[A3] = WriteData;
          end
 
          RD1 <= registers[A1];

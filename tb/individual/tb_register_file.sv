@@ -1,19 +1,19 @@
 module tb_register_file;
-   logic WE3;
+   logic WriteEnable;
    logic rst;
    logic clk;
    logic [4:0] A1; // R1
    logic [4:0] A2; // R2
    logic [4:0] A3; // RD
-   logic [31:0] WD3; // Data
+   logic [31:0] WriteData; // Data
    logic [31:0] RD1;
    logic [31:0] RD2;
 
    register_file UUT (
-      .WE3(WE3),
+      .WriteEnable(WriteEnable),
       .rst(rst),
       .clk(clk),
-      .WD3(WD3),
+      .WriteData(WriteData),
       .A1(A1),
       .A2(A2),
       .A3(A3),
@@ -37,16 +37,16 @@ module tb_register_file;
       rst = 1;
       #10;
       rst = 0;
-      WE3 = 1;
+      WriteEnable = 1;
 
       // Set all registers to their integer value
       for(int i = 0; i < 32; i++) begin
-         WD3 = i;
+         WriteData = i;
          A3 = i;
          #10;
       end
 
-      WE3 = 0;
+      WriteEnable = 0;
 
       for(int i = 0; i < 32; i++) begin
          A1 = i;

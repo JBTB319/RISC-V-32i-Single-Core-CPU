@@ -1,30 +1,37 @@
 module data_memory (
-   input logic [3:0] WE,
+   input logic [3:0] WriteEnable,
    input logic [31:0] address,
    input logic clk,
    input logic rst,
    input logic [31:0] WD,
    output logic [31:0] RD
 );
-   logic [31:0] data [65535:0]
+
+   logic [31:0] data [65535:0];
+
+   initial begin
+      $readmemh("tb/test_data/storage.hex", data);
+   end
+
    always_ff @(posedge clk) begin
       if (rst) begin
-         data <= {default:32'h0};
+         RD <= 32'h0;
       end else begin
          // RISC-V Requires Byte Accessibility
-      
-         if (WE[0]) begin
-            memory[address][7:0] <= RD[7:0];
+         if (WriteEnable[0]) begin
+            data[address][7:0] <= WD[7:0];
          end
-         if (WE[0]) begin
-            memory[address][15:8] <= RD[15:8];
+         if (WriteEnable[0]) begin
+            data[address][15:8] <= WD[15:8];
          end
-         if (WE[0]) begin
-            memory[address][23:16] <= RD[23:16];
+         if (WriteEnable[0]) begin
+            data[address][23:16] <= WD[23:16];
          end
-         if (WE[0]) begin
-            memory[address][31:24] <= RD[31:24];
+         if (WriteEnable[0]) begin
+            data[address][31:24] <= WD[31:24];
          end
+
+         RD <= data[address];
       end
    end
 endmodule
