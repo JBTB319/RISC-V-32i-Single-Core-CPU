@@ -8,6 +8,7 @@ module instruction_memory (
    logic [31:0] memory [65535:0];
 
    initial begin
+      memory = '{default: 32'h0}; 
       $readmemh("tb/test_data/add.hex", memory);
    end
 

@@ -24,15 +24,25 @@ module cpu_core (
    logic [31:0] memOut;
    logic [31:0] aluResult;
 
-   logic PC_4 = PC + 32'd4;
-   logic PC_OFF = PC + extended;
 
-   logic [3:0] DataWriteEnable = MemWrite ? 4'b1111 : 4'b0000;
-   logic [31:0] Result = ResultSrc ? memOut : aluResult;
-   logic [31:0] RegData = RegSrc ? PC_4 : Result;
-   logic [31:0] PCOffData = PCOSrc ? PC_OFF : PC_OFF;
-   logic [31:0] PCNext = PCSrc ? PCOffData : PC_4;
-   logic [31:0] srcB = (ALUSrc) ? extended : RD2;
+   logic [3:0] DataWriteEnable;
+   logic [31:0] Result;
+   logic [31:0] RegData;
+   logic [31:0] PCOffData;
+   logic [31:0] PCNext;
+   logic [31:0] srcB;
+   logic [31:0] PC_4;
+   logic [31:0] PC_OFF;
+
+
+   assign DataWriteEnable = MemWrite ? 4'b1111 : 4'b0000;
+   assign Result = ResultSrc ? memOut : aluResult;
+   assign RegData = RegSrc ? PC_4 : Result;
+   assign PC_4 =PC + 32'd1;
+   assign PC_OFF = PC + extended;
+   assign PCOffData = PCOSrc ? PC_OFF : PC_OFF; 
+   assign PCNext = PCSrc ? PCOffData : PC_4;
+   assign srcB = (ALUSrc) ? extended : RD2;
 
 
    program_counter pc (
@@ -40,13 +50,6 @@ module cpu_core (
       .rst(rst),
       .PCNext(PCNext),
       .PC(PC)
-   );
-
-   instruction_memory in_mem (
-      .rst(rst),
-      .clk(clk),
-      .address(PC),
-      .instruction(instruction)
    );
 
    control_unit unit (
@@ -64,6 +67,19 @@ module cpu_core (
       .ImmSel(ImmSel)
    );
 
+   instruction_memory in_mem (
+      .rst(rst),
+      .clk(clk),
+      .address(PC),
+      .instruction(instruction)
+   );
+
+   sign_extender sign_extend (
+      .instruct(instruction),
+      .immSrc(ImmSel),
+      .extended(extended)
+   );
+
    register_file reg_file (
       .WriteEnable(RegWrite),
       .rst(rst),
@@ -76,12 +92,6 @@ module cpu_core (
       .RD2(RD2)
    );
 
-   sign_extender sign_extend (
-      .instruct(instruction),
-      .immSrc(ImmSel),
-      .extended(extended)
-   );
-   
    alu alu_component (
       .srcA(RD1),
       .srcB(srcB),
@@ -97,4 +107,7 @@ module cpu_core (
       .WD(RD2),
       .RD(memOut)
    );
+
+   /*
+   */
 endmodule

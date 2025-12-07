@@ -14,15 +14,13 @@ module register_file (
    always_ff @(posedge clk) begin 
       if (rst) begin
          registers <= '{default: 32'h0};
-         RD1 <= 32'b0;
-         RD2 <= 32'b0;
       end else begin
          if(WriteEnable) begin
-            registers[A3] = WriteData;
+            registers[A3] <= WriteData;
          end
-
-         RD1 <= registers[A1];
-         RD2 <= registers[A2];
       end
    end
+
+   assign RD1 = registers[A1];
+   assign RD2 = registers[A2];
 endmodule
