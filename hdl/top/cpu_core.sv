@@ -95,6 +95,6 @@ module cpu_core (
       .clk(clk),
       .rst(rst),
       .WD(RD2),
-      .RD(memOut),
+      .RD(memOut)
    );
 endmodule
